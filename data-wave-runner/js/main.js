@@ -18,6 +18,8 @@ const player = new Player(canvas.width, canvas.height);
 const obstacles = new ObstacleManager(canvas.width, canvas.height);
 const items = new ItemManager();
 
+let lastFrameTime = performance.now();
+
 function syncCanvasSize() {
     const rect = dom.gameWrapper.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return;
@@ -27,7 +29,6 @@ function syncCanvasSize() {
     let targetH = 500;
 
     if (isPortraitMobile) {
-        // Gunakan lebar dasar 460px dan hitung tinggi sesuai proporsi asli kontainer HP
         targetW = 460;
         targetH = Math.round(targetW * (rect.height / rect.width));
     }
@@ -57,6 +58,7 @@ function startGame() {
     state.baseSpeed = 3.1;
     setHold(false);
     state.gameState = 'PLAYING';
+    lastFrameTime = performance.now();
 
     dom.hud.classList.remove('hidden');
     updateHUD(player);
@@ -95,11 +97,11 @@ function handleItemCollect(type) {
     updateHUD(player);
 }
 
-function drawBackgroundGrid(speed) {
+function drawBackgroundGrid(stepSpeed) {
     ctx.fillStyle = state.isLightModeActive ? '#f7f9fc' : '#1e1e1e';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    state.gridOffset = (state.gridOffset - speed * 0.5) % 40;
+    state.gridOffset = (state.gridOffset - stepSpeed * 0.5) % 40;
     ctx.strokeStyle = state.isLightModeActive ? '#e2e8f0' : '#262626';
     ctx.lineWidth = 1;
 
@@ -117,18 +119,24 @@ function drawBackgroundGrid(speed) {
     }
 }
 
-function gameLoop() {
+function gameLoop(timestamp = performance.now()) {
+    // Hitung Delta Time (dinormalisasi ke basis 60 FPS = 16.667ms per frame)
+    const elapsedMs = timestamp - lastFrameTime;
+    lastFrameTime = timestamp;
+    const dt = Math.min(elapsedMs / 16.667, 3.0);
+
     if (state.gameState === 'PLAYING') {
         state.baseSpeed = Math.min(7.2, 3.1 + (state.payloadKB / 1800));
         const activeSpeed = player.turboTimer > 0 ? state.baseSpeed * 1.45 : state.baseSpeed;
+        const stepSpeed = activeSpeed * dt;
 
-        drawBackgroundGrid(activeSpeed);
+        drawBackgroundGrid(stepSpeed);
 
-        player.update(state.isHolding, activeSpeed);
-        obstacles.update(activeSpeed, items);
-        items.update(activeSpeed, player, handleItemCollect);
+        player.update(state.isHolding, stepSpeed, dt);
+        obstacles.update(stepSpeed, items, dt);
+        items.update(stepSpeed, player, handleItemCollect);
 
-        state.payloadKB += activeSpeed * 0.08;
+        state.payloadKB += stepSpeed * 0.08;
         updateHUD(player);
 
         const hit = obstacles.checkCollision(player);
@@ -173,7 +181,7 @@ function gameLoop() {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     } else {
-        drawBackgroundGrid(1);
+        drawBackgroundGrid(1 * dt);
         obstacles.draw(ctx, state.isLightModeActive, userSettings.glow);
         items.draw(ctx, state.isLightModeActive, userSettings.glow);
         if (state.gameState === 'GAMEOVER') {

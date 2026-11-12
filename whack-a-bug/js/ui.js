@@ -138,7 +138,7 @@ export function initUI(onStartCountdown) {
 
     document.getElementById('toggle-haptic').addEventListener('click', () => {
         userSettings.haptic = !userSettings.haptic;
-        if (userSettings.haptic && navigator.vibrate) navigator.vibrate(25);
+        if (userSettings.haptic) SoundFX.vibrate(65);
         saveSettings();
         applySettings();
     });

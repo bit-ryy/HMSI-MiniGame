@@ -79,8 +79,8 @@ export function whack(key) {
 
         SoundFX.play('hit');
 
-        if (userSettings.haptic && navigator.vibrate) {
-            navigator.vibrate(30);
+        if (userSettings.haptic) {
+            SoundFX.vibrate(65);
         }
 
         if (userSettings.impact) {

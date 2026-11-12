@@ -1,7 +1,7 @@
-// Purpose: Synthesizer-based sound effects using the Web Audio API
+// Purpose: Synthesizer-based sound effects and Haptic Feedback handler
 // Used By: ui.js, game.js, input.js
 // Depends On: None
-// Impact: Generates dynamic retro 8-bit audio cues (hit, beep, gameover) without relying on external sound files
+// Impact: Generates dynamic retro 8-bit audio cues and triggers mobile device vibration
 
 export const SoundFX = {
     ctx: null,
@@ -13,6 +13,17 @@ export const SoundFX = {
         }
         if (this.ctx.state === 'suspended') {
             this.ctx.resume();
+        }
+    },
+
+    vibrate(pattern = 65) {
+        try {
+            if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+                navigator.vibrate(0); // Reset antrean getar sebelumnya
+                navigator.vibrate(pattern);
+            }
+        } catch (err) {
+            // Abaikan jika perangkat tidak mendukung Vibration API
         }
     },
 

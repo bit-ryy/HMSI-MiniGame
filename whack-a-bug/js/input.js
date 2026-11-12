@@ -1,4 +1,4 @@
-// Purpose: Centralized event listeners for touch, mouse clicks, and Numpad keyboard shortcuts
+// Purpose: Centralized event listeners for pointer (touch/mouse) and Numpad keyboard shortcuts
 // Used By: main.js
 // Depends On: config.js, audio.js, ui.js, game.js
 // Impact: Translates physical user inputs into in-game hitting actions and keyboard menu navigation
@@ -12,13 +12,10 @@ export function initInput() {
     Object.keys(slots).forEach(key => {
         const slotEl = slots[key];
 
-        slotEl.addEventListener('touchstart', (e) => {
-            e.preventDefault();
+        // Gunakan pointerdown (tanpa preventDefault) agar browser mobile mengizinkan Vibration API
+        slotEl.addEventListener('pointerdown', (e) => {
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
             whack(key);
-        }, { passive: false });
-
-        slotEl.addEventListener('mousedown', (e) => {
-            if (e.button === 0) whack(key);
         });
     });
 

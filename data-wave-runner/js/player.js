@@ -18,7 +18,6 @@ export class Player {
     }
 
     resize(canvasWidth, canvasHeight) {
-        // Di layar portrait yang sempit, posisikan panah lebih ke kiri agar jarak pandang ke depan luas
         this.x = Math.min(160, Math.max(85, Math.round(canvasWidth * 0.22)));
         this.y = Math.min(Math.max(this.y || canvasHeight / 2, 30), canvasHeight - 30);
     }
@@ -43,24 +42,25 @@ export class Player {
         this.turboTimer = 0;
     }
 
-    update(isHolding, gameSpeed) {
-        const vy = (isHolding ? -gameSpeed : gameSpeed) * this.vyMultiplier;
+    update(isHolding, stepSpeed, dt = 1) {
+        const vy = (isHolding ? -stepSpeed : stepSpeed) * this.vyMultiplier;
         this.y += vy;
 
         const targetAngle = isHolding ? -this.maxAngle : this.maxAngle;
-        this.angle += (targetAngle - this.angle) * 0.25;
+        const turnFactor = 1 - Math.pow(1 - 0.25, dt);
+        this.angle += (targetAngle - this.angle) * turnFactor;
 
         for (let i = 0; i < this.trail.length; i++) {
-            this.trail[i].x -= gameSpeed;
+            this.trail[i].x -= stepSpeed;
         }
         this.trail.push({ x: this.x, y: this.y });
 
-        if (this.trail.length > 0 && this.trail[0].x < -20) {
+        while (this.trail.length > 0 && this.trail[0].x < -20) {
             this.trail.shift();
         }
 
-        if (this.invincibleTimer > 0) this.invincibleTimer--;
-        if (this.turboTimer > 0) this.turboTimer--;
+        if (this.invincibleTimer > 0) this.invincibleTimer = Math.max(0, this.invincibleTimer - dt);
+        if (this.turboTimer > 0) this.turboTimer = Math.max(0, this.turboTimer - dt);
     }
 
     draw(ctx, isLightMode = false, glowEnabled = true) {

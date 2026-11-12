@@ -74,12 +74,12 @@ export class ObstacleManager {
         }
     }
 
-    update(gameSpeed, itemManager) {
+    update(stepSpeed, itemManager, dt = 1) {
         for (let i = 0; i < this.walls.length; i++) {
-            this.walls[i].x -= gameSpeed;
+            this.walls[i].x -= stepSpeed;
         }
 
-        if (this.walls.length > 0 && this.walls[0].x + this.sliceWidth < 0) {
+        while (this.walls.length > 0 && this.walls[0].x + this.sliceWidth < 0) {
             this.walls.shift();
             const lastX = this.walls[this.walls.length - 1].x;
             const newX = lastX + this.sliceWidth;
@@ -94,8 +94,8 @@ export class ObstacleManager {
         }
 
         for (let i = this.hazards.length - 1; i >= 0; i--) {
-            this.hazards[i].x -= gameSpeed;
-            this.hazards[i].angle += 0.08;
+            this.hazards[i].x -= stepSpeed;
+            this.hazards[i].angle += 0.08 * dt;
             if (this.hazards[i].x < -50) {
                 this.hazards.splice(i, 1);
             }
