@@ -55,7 +55,7 @@ function startGame() {
     items.reset();
 
     state.payloadKB = 0;
-    state.baseSpeed = 3.1;
+    state.baseSpeed = 6.2;
     setHold(false);
     state.gameState = 'PLAYING';
     lastFrameTime = performance.now();
@@ -126,7 +126,8 @@ function gameLoop(timestamp = performance.now()) {
     const dt = Math.min(elapsedMs / 16.667, 3.0);
 
     if (state.gameState === 'PLAYING') {
-        state.baseSpeed = Math.min(7.2, 3.1 + (state.payloadKB / 1800));
+        // Kecepatan dikalibrasi 2x lebih responsif agar setara feel 120Hz di semua layar
+        state.baseSpeed = Math.min(13.5, 6.2 + (state.payloadKB / 1200));
         const activeSpeed = player.turboTimer > 0 ? state.baseSpeed * 1.45 : state.baseSpeed;
         const stepSpeed = activeSpeed * dt;
 
@@ -136,7 +137,7 @@ function gameLoop(timestamp = performance.now()) {
         obstacles.update(stepSpeed, items, dt);
         items.update(stepSpeed, player, handleItemCollect);
 
-        state.payloadKB += stepSpeed * 0.08;
+        state.payloadKB += stepSpeed * 0.05;
         updateHUD(player);
 
         const hit = obstacles.checkCollision(player);
@@ -181,7 +182,7 @@ function gameLoop(timestamp = performance.now()) {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     } else {
-        drawBackgroundGrid(1 * dt);
+        drawBackgroundGrid(2 * dt);
         obstacles.draw(ctx, state.isLightModeActive, userSettings.glow);
         items.draw(ctx, state.isLightModeActive, userSettings.glow);
         if (state.gameState === 'GAMEOVER') {

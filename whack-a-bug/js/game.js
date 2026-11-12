@@ -41,7 +41,6 @@ export function startCountdown() {
 }
 
 export function spawnBug() {
-    // 1. Bersihkan slot sebelumnya jika bug belum sempat terpukul
     if (state.activeSlot) {
         resetSlotContent(state.activeSlot);
     }
@@ -55,7 +54,6 @@ export function spawnBug() {
     state.lastSlotKey = randomKey;
     state.activeSlot = slots[randomKey];
 
-    // 2. Bersihkan slot tujuan (menghapus teks '// FIXED' jika sebelumnya sudah terpukul)
     resetSlotContent(state.activeSlot);
 
     const bugElement = document.createElement('div');
@@ -80,7 +78,7 @@ export function whack(key) {
         SoundFX.play('hit');
 
         if (userSettings.haptic) {
-            SoundFX.vibrate(65);
+            SoundFX.vibrate(80);
         }
 
         if (userSettings.impact) {
@@ -88,6 +86,9 @@ export function whack(key) {
         }
         state.activeSlot.innerHTML = `<span class="fixed-text">// FIXED</span><span class="numpad-hint">[${key}]</span>`;
         state.activeSlot = null;
+    } else if (userSettings.haptic) {
+        // Getar halus singkat saat mengetuk slot kosong
+        SoundFX.vibrate(25);
     }
 }
 

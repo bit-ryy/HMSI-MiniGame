@@ -17,7 +17,7 @@ export const userSettings = JSON.parse(localStorage.getItem('dwr_settings')) || 
 export const state = {
     gameState: 'BOOT', // BOOT, LOADING, MENU, PLAYING, GAMEOVER
     isHolding: false,
-    baseSpeed: 3.1,
+    baseSpeed: 6.2,
     payloadKB: 0,
     highScoreKB: parseFloat(localStorage.getItem('dwr_highscore_kb')) || 0,
     gridOffset: 0,

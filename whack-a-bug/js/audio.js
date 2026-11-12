@@ -16,14 +16,33 @@ export const SoundFX = {
         }
     },
 
-    vibrate(pattern = 65) {
+    vibrate(duration = 80) {
         try {
             if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
-                navigator.vibrate(0); // Reset antrean getar sebelumnya
-                navigator.vibrate(pattern);
+                // Kirim sebagai Array Pattern tanpa vibrate(0) agar tidak dibatalkan oleh antrean HyperOS/Android
+                navigator.vibrate([duration]);
             }
         } catch (err) {
-            // Abaikan jika perangkat tidak mendukung Vibration API
+            // Abaikan jika browser memblokir Vibration API
+        }
+
+        // Tambahan Sub-Bass Tactile Pulse (memberikan efek kejut akustik 55Hz di HP)
+        try {
+            this.init();
+            const now = this.ctx.currentTime;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(65, now);
+            osc.frequency.exponentialRampToValueAtTime(32, now + 0.065);
+            gain.gain.setValueAtTime(0.35, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.065);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now);
+            osc.stop(now + 0.065);
+        } catch (err) {
+            // Abaikan jika AudioContext belum siap
         }
     },
 
