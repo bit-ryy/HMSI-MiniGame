@@ -1,0 +1,186 @@
+/*
+ * Purpose: Styling for reusable UI components (buttons, badges, cards, modals)
+ * Used By: css/style.css (@import)
+ * Depends On: css/variables.css
+ * Impact: Determines the visual appearance of all interactive UI elements and settings dialogs
+ */
+
+.btn-top-settings {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    z-index: 35;
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border-card);
+    padding: 7px 14px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.btn-top-settings:hover {
+    border-color: var(--text-cyan);
+    color: var(--text-cyan);
+}
+
+.hud-box {
+    background: var(--bg-hud);
+    border: 1px solid var(--border-card);
+    padding: 7px 14px;
+    border-radius: 5px;
+    font-size: 15px;
+    color: var(--text-main);
+}
+
+.badge {
+    padding: 7px 12px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: bold;
+    border: 1px solid var(--border-card);
+    transition: 0.2s;
+}
+
+.badge-off { background: var(--bg-hud); color: var(--text-muted); }
+.badge-shield-on { background: rgba(0, 122, 204, 0.2); color: var(--text-val-cyan); border-color: var(--text-val-cyan); }
+.badge-turbo-on { background: rgba(206, 145, 120, 0.25); color: var(--text-orange); border-color: var(--text-orange); }
+
+.info-card {
+    background-color: var(--bg-card);
+    border: 1px dashed var(--border-card);
+    padding: 18px 26px;
+    border-radius: 6px;
+    max-width: 680px;
+    margin-bottom: 24px;
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+.info-card p { margin: 0; }
+.divider { border: none; border-top: 1px solid var(--border-card); margin: 12px 0; }
+
+.item-legend {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 14px;
+}
+
+.stats-result {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    padding: 14px 32px;
+    border-radius: 6px;
+    margin-bottom: 22px;
+    font-size: 18px;
+}
+
+.stats-result p { margin: 8px 0; }
+
+.btn-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn {
+    background-color: #0e639c;
+    color: #ffffff;
+    border: 1px solid #1177bb;
+    padding: 12px 26px;
+    font-size: 17px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.15s, transform 0.1s;
+}
+
+.btn:hover { background-color: #1177bb; }
+.btn:active { transform: scale(0.96); }
+
+.btn-secondary { background-color: var(--btn-secondary-bg); color: var(--btn-secondary-text); border-color: var(--border-card); }
+.btn-secondary:hover { opacity: 0.9; }
+
+.btn-danger-solid { background-color: #cf222e; border-color: #f44747; color: #ffffff; }
+.btn-danger-solid:hover { background-color: #a40e26; }
+
+.settings-box, .confirm-box {
+    background-color: var(--bg-card);
+    border: 2px solid var(--border-card);
+    border-radius: 8px;
+    width: 540px;
+    max-width: 94%;
+    padding: 20px 24px;
+    text-align: left;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.confirm-box { text-align: center; width: 460px; }
+.confirm-box h2 { font-size: 24px; margin-bottom: 10px; }
+.confirm-desc { font-size: 14px; line-height: 1.5; margin-bottom: 20px; color: var(--text-main); }
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-card);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+}
+
+.settings-header .text-cyan { font-size: 20px; font-weight: bold; margin: 0; }
+
+.btn-icon {
+    background: transparent;
+    border: 1px solid var(--border-card);
+    color: var(--text-main);
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn-icon:hover { background: var(--text-red); color: #fff; border-color: var(--text-red); }
+
+.settings-body { display: flex; flex-direction: column; gap: 14px; }
+.setting-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.setting-row-danger { border-top: 1px dashed var(--border-card); padding-top: 12px; margin-top: 4px; }
+.setting-label { font-size: 14px; font-weight: bold; }
+.segmented-control, .toggle-group { display: flex; gap: 6px; }
+
+.seg-btn, .toggle-btn, .btn-danger {
+    background: var(--bg-canvas);
+    color: var(--text-muted);
+    border: 1px solid var(--border-card);
+    padding: 6px 12px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.seg-btn.active, .toggle-btn.active { background: #0e639c; color: #ffffff; border-color: #1177bb; }
+.btn-danger { color: var(--text-red); border-color: var(--text-red); }
+.btn-danger:hover { background: var(--text-red); color: #ffffff; }
+
+.progress-box {
+    width: 340px;
+    max-width: 80%;
+    height: 18px;
+    border: 2px solid var(--text-cyan);
+    margin-top: 15px;
+    background: var(--bg-canvas);
+    padding: 2px;
+}
+
+#loading-bar { height: 100%; width: 0%; background-color: var(--text-cyan); transition: width 0.4s ease; }

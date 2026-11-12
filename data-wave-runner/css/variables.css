@@ -1,0 +1,56 @@
+/*
+ * Purpose: CSS Custom Properties (Variables) definition for light/dark themes and glow effects
+ * Used By: All other CSS modules (base, layout, components, responsive)
+ * Depends On: None
+ * Impact: Centralizes color palettes and theme switching logic across the entire game UI
+ */
+
+:root {
+    --bg-outer: #121212;
+    --bg-canvas: #1e1e1e;
+    --bg-overlay: rgba(24, 24, 24, 0.94);
+    --bg-card: #252526;
+    --bg-hud: rgba(30, 30, 30, 0.88);
+    --border-main: #333333;
+    --border-card: #444444;
+    --text-main: #d4d4d4;
+    --text-muted: #888888;
+    --text-cyan: #569cd6;
+    --glow-cyan: rgba(86, 156, 214, 0.5);
+    --text-val-cyan: #4fc1ff;
+    --text-green: #b5cea8;
+    --text-comment: #6a9955;
+    --text-orange: #ce9178;
+    --text-red: #f44747;
+    --glow-red: rgba(244, 71, 71, 0.5);
+    --btn-secondary-bg: #3a3d41;
+    --btn-secondary-text: #ffffff;
+}
+
+body.theme-light {
+    --bg-outer: #e4e6eb;
+    --bg-canvas: #f7f9fc;
+    --bg-overlay: rgba(247, 249, 252, 0.95);
+    --bg-card: #ffffff;
+    --bg-hud: rgba(255, 255, 255, 0.92);
+    --border-main: #b0b8c4;
+    --border-card: #cccccc;
+    --text-main: #1f2328;
+    --text-muted: #57606a;
+    --text-cyan: #0550ae;
+    --glow-cyan: rgba(5, 80, 174, 0.25);
+    --text-val-cyan: #0969da;
+    --text-green: #1a7f37;
+    --text-comment: #2da44e;
+    --text-orange: #bc4c00;
+    --text-red: #cf222e;
+    --glow-red: rgba(207, 34, 46, 0.25);
+    --btn-secondary-bg: #d0d7de;
+    --btn-secondary-text: #1f2328;
+}
+
+body.no-glow .text-cyan,
+body.no-glow .text-purple,
+body.no-glow .text-red {
+    text-shadow: none !important;
+}

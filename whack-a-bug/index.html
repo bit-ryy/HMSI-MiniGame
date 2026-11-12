@@ -1,0 +1,206 @@
+<!--
+  Purpose: Main HTML entry point and DOM structure for Whack-a-Bug
+  Used By: Browser (User)
+  Depends On: css/style.css, js/main.js
+  Impact: Renders the 3x3 game grid, UI overlays, HUD, and configuration modals
+-->
+
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Whack-a-Bug // SI Edition</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div id="app-layout">
+        <div id="game-wrapper">
+
+            <!-- TOMBOL SETTINGS CEPAT -->
+            <button id="btn-open-settings" class="btn-top-settings hidden" title="Pengaturan Sistem">
+                ⚙ CONFIG<span class="desktop-shortcut"> [S]</span>
+            </button>
+
+            <!-- 0. LAYAR BOOTING -->
+            <div id="boot-screen" class="screen-overlay" style="z-index: 30;">
+                <h1 class="text-cyan">> SYSTEM_OFFLINE</h1>
+                <p class="text-comment">// Otorisasi diperlukan untuk akses terminal debugging</p>
+                <button id="btn-power" class="btn">> Login Terminal</button>
+            </div>
+
+            <!-- 0.5. LAYAR LOADING -->
+            <div id="loading-screen" class="screen-overlay hidden" style="z-index: 25;">
+                <h1 class="text-purple">> INITIALIZING...</h1>
+                <p id="loading-text" class="text-teal">Memuat modul sistem...</p>
+                <div class="progress-box">
+                    <div id="loading-bar"></div>
+                </div>
+            </div>
+
+            <!-- 1. LAYAR MENU UTAMA -->
+            <div id="start-screen" class="screen-overlay hidden" style="z-index: 20;">
+                <h1 class="text-cyan">> Whack_A_Bug.exe</h1>
+                <p class="text-comment">// Himpunan Mahasiswa Sistem Informasi</p>
+
+                <div class="info-card">
+                    <p><span class="text-orange">[INSTRUKSI]</span> Basmi <b>Bug</b> (👾) secepat mungkin menggunakan
+                        <b>KLIK MOUSE</b>, <b>TAP LAYAR</b><span class="desktop-hint">, atau tombol <b>NUMPAD
+                                [1-9]</b></span>.</p>
+                </div>
+
+                <button id="btn-mulai" class="btn">> Mulai Debugging<span class="desktop-shortcut"> [M]</span></button>
+            </div>
+
+            <!-- 2. LAYAR PILIH LEVEL -->
+            <div id="difficulty-screen" class="screen-overlay hidden" style="z-index: 20;">
+                <h1 class="text-purple">> SELECT_DIFFICULTY.sh</h1>
+                <p class="text-comment">// Pilih kecepatan replikasi bug di server:</p>
+
+                <div class="level-container">
+                    <button class="btn btn-level" data-speed="1100">> Mudah</button>
+                    <button class="btn btn-level" data-speed="750">> Sedang</button>
+                    <button class="btn btn-level" data-speed="500">> Sulit</button>
+                    <button class="btn btn-danger btn-level" data-speed="350">> EXTREME</button>
+                </div>
+
+                <button id="btn-batal-level" class="btn btn-secondary" style="margin-top: 20px;">> Kembali ke
+                    Menu</button>
+            </div>
+
+            <!-- 3. LAYAR HITUNG MUNDUR -->
+            <div id="countdown-screen" class="screen-overlay hidden" style="z-index: 20;">
+                <p class="text-comment">// Bersiaplah...</p>
+                <h1 id="countdown-text">3</h1>
+            </div>
+
+            <!-- 4. LAYAR GAME OVER -->
+            <div id="gameover-screen" class="screen-overlay hidden" style="z-index: 20;">
+                <h1 class="text-red">> SISTEM DIHENTIKAN</h1>
+                <p class="text-comment">// Waktu sesi debugging telah habis!</p>
+
+                <div class="stats-result">
+                    <p>Bug Dibasmi (Skor) : <span id="final-score" class="val-orange">0</span></p>
+                    <p>Rekor Tertinggi : <span id="final-best" class="val-green">0</span></p>
+                </div>
+
+                <div class="btn-group">
+                    <button id="btn-main-lagi" class="btn">> Main Lagi<span class="desktop-shortcut">
+                            [R]</span></button>
+                    <button id="btn-tidak" class="btn btn-secondary">> Menu Utama</button>
+                </div>
+            </div>
+
+            <!-- 5. MODAL SETTINGS (CONFIG_SETTINGS.SYS) -->
+            <div id="settings-modal" class="screen-overlay hidden" style="z-index: 40;">
+                <div class="settings-box">
+                    <div class="settings-header">
+                        <span class="text-cyan">> CONFIG_SETTINGS.SYS</span>
+                        <button type="button" id="btn-close-settings" class="btn-icon">✕</button>
+                    </div>
+
+                    <div class="settings-body">
+                        <div class="setting-row">
+                            <span class="setting-label">Tema Tampilan</span>
+                            <div class="segmented-control" id="theme-selector">
+                                <button type="button" data-theme="dark" class="seg-btn active">Gelap</button>
+                                <button type="button" data-theme="light" class="seg-btn">Terang</button>
+                                <button type="button" data-theme="system" class="seg-btn">Sistem</button>
+                            </div>
+                        </div>
+
+                        <div class="setting-row">
+                            <span class="setting-label">Audio & Suara</span>
+                            <div class="toggle-group">
+                                <button type="button" id="toggle-bgm" class="toggle-btn active">BGM: ON</button>
+                                <button type="button" id="toggle-sfx" class="toggle-btn active">SFX: ON</button>
+                            </div>
+                        </div>
+
+                        <!-- Haptic Feedback (HANYA MUNCUL DI MOBILE) -->
+                        <div class="setting-row setting-row-mobile-only">
+                            <span class="setting-label">Getar Sentuh</span>
+                            <div class="toggle-group">
+                                <button type="button" id="toggle-haptic" class="toggle-btn active">Haptic: ON</button>
+                            </div>
+                        </div>
+
+                        <div class="setting-row">
+                            <span class="setting-label">Efek Visual</span>
+                            <div class="toggle-group">
+                                <button type="button" id="toggle-glow" class="toggle-btn active">Neon Glow: ON</button>
+                                <button type="button" id="toggle-impact" class="toggle-btn active">Impact FX:
+                                    ON</button>
+                            </div>
+                        </div>
+
+                        <div class="setting-row setting-row-danger">
+                            <span class="setting-label">Memori Lokal</span>
+                            <button type="button" id="btn-reset-data" class="btn-danger-outline">> Purge High
+                                Score</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. MODAL KONFIRMASI HAPUS HIGH SCORE -->
+            <div id="confirm-modal" class="screen-overlay hidden" style="z-index: 45;">
+                <div class="confirm-box">
+                    <h2 class="text-red">> WARNING: DATA_PURGE</h2>
+                    <p class="confirm-desc">Apakah kamu yakin ingin menghapus data <b>Rekor Tertinggi (High Score)</b>?
+                        Tindakan ini permanen dan tidak dapat dibatalkan.</p>
+                    <div class="btn-group">
+                        <button type="button" id="btn-confirm-yes" class="btn btn-danger">> Ya, Hapus Data</button>
+                        <button type="button" id="btn-confirm-no" class="btn btn-secondary">> Batal</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AREA BERMAIN UTAMA -->
+            <div id="play-area" class="play-area hidden">
+                <header class="game-header">
+                    <h1 class="game-title">> Whack_A_Bug.exe</h1>
+                    <div class="hud-stats">
+                        <div class="stat-box">
+                            <span class="stat-label">SCORE:</span>
+                            <span id="score" class="val-orange">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">BEST:</span>
+                            <span id="best-score" class="val-green">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">TIME:</span>
+                            <span id="time" class="val-cyan">30</span><span class="val-cyan">s</span>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- GRID 3x3 RESPONSIVE -->
+                <div class="grid-container">
+                    <div class="slot" id="slot-7" data-key="7"><span class="numpad-hint">[7]</span></div>
+                    <div class="slot" id="slot-8" data-key="8"><span class="numpad-hint">[8]</span></div>
+                    <div class="slot" id="slot-9" data-key="9"><span class="numpad-hint">[9]</span></div>
+                    <div class="slot" id="slot-4" data-key="4"><span class="numpad-hint">[4]</span></div>
+                    <div class="slot" id="slot-5" data-key="5"><span class="numpad-hint">[5]</span></div>
+                    <div class="slot" id="slot-6" data-key="6"><span class="numpad-hint">[6]</span></div>
+                    <div class="slot" id="slot-1" data-key="1"><span class="numpad-hint">[1]</span></div>
+                    <div class="slot" id="slot-2" data-key="2"><span class="numpad-hint">[2]</span></div>
+                    <div class="slot" id="slot-3" data-key="3"><span class="numpad-hint">[3]</span></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Audio BGM -->
+    <audio id="bgm" src="assets/audio/bgm.mp3" loop></audio>
+
+    <!-- ENTRY POINT MODUL JAVASCRIPT -->
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>

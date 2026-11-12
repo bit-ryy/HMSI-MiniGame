@@ -1,0 +1,12 @@
+/*
+ * Purpose: Main stylesheet aggregator
+ * Used By: index.html
+ * Depends On: variables.css, base.css, layout.css, components.css, responsive.css
+ * Impact: Loads and orchestrates all modular CSS files in the correct cascade order
+ */
+
+@import url('variables.css');
+@import url('base.css');
+@import url('layout.css');
+@import url('components.css');
+@import url('responsive.css');

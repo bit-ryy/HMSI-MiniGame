@@ -1,0 +1,72 @@
+/*
+ * Purpose: Base resets, global typography, and static keyframe animations
+ * Used By: css/style.css (@import)
+ * Depends On: css/variables.css
+ * Impact: Normalizes browser styles, prevents scrolling/text-selection, and defines base typography
+ */
+
+* {
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+html, body {
+    background-color: var(--bg-outer);
+    color: var(--text-main);
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    touch-action: none;
+    overscroll-behavior: none;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes shakeAnim {
+    0%, 100% { transform: translate(0, 0); }
+    20% { transform: translate(-7px, 5px); }
+    40% { transform: translate(7px, -5px); }
+    60% { transform: translate(-5px, -4px); }
+    80% { transform: translate(5px, 4px); }
+}
+
+.shake {
+    animation: shakeAnim 0.3s ease-in-out;
+}
+
+.text-cyan {
+    color: var(--text-cyan);
+    margin: 0 0 8px 0;
+    font-size: 34px;
+    text-shadow: 0 0 12px var(--glow-cyan);
+}
+
+.text-purple {
+    color: #c586c0;
+    margin: 0 0 8px 0;
+    font-size: 30px;
+    text-shadow: 0 0 12px rgba(197, 134, 192, 0.4);
+}
+
+.text-red {
+    color: var(--text-red);
+    margin: 0 0 8px 0;
+    font-size: 34px;
+    text-shadow: 0 0 12px var(--glow-red);
+}
+
+.text-comment { color: var(--text-comment); margin-top: 0; margin-bottom: 24px; font-size: 16px; }
+.text-orange { color: var(--text-orange); }
+.val-cyan { color: var(--text-val-cyan); font-weight: bold; }
+.val-green { color: var(--text-green); font-weight: bold; }
+.legend-data { color: #2da44e; }
+.legend-shield { color: var(--text-cyan); }
+.legend-turbo { color: var(--text-orange); }

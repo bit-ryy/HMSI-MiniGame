@@ -1,0 +1,239 @@
+/*
+ * Purpose: Styling for reusable UI components (slots, bugs, buttons, cards, modals)
+ * Used By: css/style.css (@import)
+ * Depends On: css/variables.css
+ * Impact: Determines the visual appearance of interactive UI elements, grid slots, and settings dialogs
+ */
+
+.btn-top-settings {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    z-index: 35;
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border-card);
+    padding: 7px 14px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.btn-top-settings:hover {
+    border-color: var(--text-cyan);
+    color: var(--text-cyan);
+}
+
+.stat-box {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-card);
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 18px;
+    min-width: 140px;
+    text-align: center;
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-right: 6px;
+}
+
+.slot {
+    width: 100%;
+    min-width: 0;
+    height: 120px;
+    background-color: var(--bg-slot);
+    border: 1.5px dashed var(--border-card);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--text-comment);
+    cursor: crosshair;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.08s, border-color 0.08s, transform 0.05s;
+}
+
+.slot:active, .slot.slot-active {
+    background-color: var(--bg-slot-active);
+    border-color: var(--text-cyan);
+}
+
+body:not(.no-impact) .slot:active,
+body:not(.no-impact) .slot.slot-active {
+    transform: scale(0.95);
+}
+
+.slot.slot-hit {
+    background-color: rgba(206, 145, 120, 0.2);
+    border-color: var(--text-orange);
+}
+
+.bug {
+    font-size: 64px;
+    line-height: 1;
+    pointer-events: none;
+    animation: popIn 0.12s ease-out;
+}
+
+.fixed-text {
+    color: var(--text-orange);
+    font-weight: bold;
+    font-size: 18px;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.numpad-hint {
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    font-size: 13px;
+    color: var(--text-muted);
+    opacity: 0.65;
+    pointer-events: none;
+}
+
+.info-card {
+    background-color: var(--bg-card);
+    border: 1px dashed var(--border-card);
+    padding: 18px 26px;
+    border-radius: 6px;
+    max-width: 680px;
+    margin-bottom: 24px;
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+.info-card p { margin: 0; }
+
+.stats-result {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    padding: 14px 32px;
+    border-radius: 6px;
+    margin-bottom: 22px;
+    font-size: 18px;
+}
+
+.stats-result p { margin: 8px 0; }
+
+.level-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    width: 100%;
+    max-width: 440px;
+}
+
+.btn-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn {
+    background-color: #0e639c;
+    color: #ffffff;
+    border: 1px solid #1177bb;
+    padding: 12px 26px;
+    font-size: 17px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.15s, transform 0.1s;
+}
+
+.btn:hover { background-color: #1177bb; }
+.btn:active { transform: scale(0.96); }
+
+.btn-danger { background-color: #cf222e; border-color: #f44747; color: #ffffff; }
+.btn-danger:hover { background-color: #a40e26; }
+
+.btn-secondary { background-color: var(--btn-secondary-bg); color: var(--btn-secondary-text); border-color: var(--border-card); }
+.btn-secondary:hover { opacity: 0.9; }
+
+.settings-box, .confirm-box {
+    background-color: var(--bg-card);
+    border: 2px solid var(--border-card);
+    border-radius: 8px;
+    width: 540px;
+    max-width: 94%;
+    padding: 20px 24px;
+    text-align: left;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.confirm-box { text-align: center; width: 460px; }
+.confirm-box h2 { font-size: 24px; margin-bottom: 10px; }
+.confirm-desc { font-size: 14px; line-height: 1.5; margin-bottom: 20px; color: var(--text-main); }
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-card);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+}
+
+.settings-header .text-cyan { font-size: 20px; font-weight: bold; margin: 0; }
+
+.btn-icon {
+    background: transparent;
+    border: 1px solid var(--border-card);
+    color: var(--text-main);
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn-icon:hover { background: var(--text-red); color: #fff; border-color: var(--text-red); }
+
+.settings-body { display: flex; flex-direction: column; gap: 14px; }
+.setting-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.setting-row-mobile-only { display: none; }
+.setting-row-danger { border-top: 1px dashed var(--border-card); padding-top: 12px; margin-top: 4px; }
+.setting-label { font-size: 14px; font-weight: bold; }
+.segmented-control, .toggle-group { display: flex; gap: 6px; }
+
+.seg-btn, .toggle-btn, .btn-danger-outline {
+    background: var(--bg-canvas);
+    color: var(--text-muted);
+    border: 1px solid var(--border-card);
+    padding: 6px 12px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.seg-btn.active, .toggle-btn.active { background: #0e639c; color: #ffffff; border-color: #1177bb; }
+.btn-danger-outline { color: var(--text-red); border-color: var(--text-red); }
+.btn-danger-outline:hover { background: var(--text-red); color: #ffffff; }
+
+.progress-box {
+    width: 340px;
+    max-width: 80%;
+    height: 18px;
+    border: 2px solid var(--text-cyan);
+    margin-top: 15px;
+    background: var(--bg-canvas);
+    padding: 2px;
+}
+
+#loading-bar { height: 100%; width: 0%; background-color: var(--text-cyan); transition: width 0.4s ease; }
+#countdown-text { font-size: 120px; color: var(--text-orange); margin: 10px 0; }

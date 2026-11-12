@@ -1,0 +1,176 @@
+<!--
+  Purpose: Main HTML entry point and DOM structure for Data Wave Runner
+  Used By: Browser (User)
+  Depends On: css/style.css, js/main.js
+  Impact: Renders the game canvas, UI overlays, HUD, and configuration modals
+-->
+
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Data Wave Runner // SI Edition</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div id="app-layout">
+        <div id="game-wrapper">
+            <canvas id="gameCanvas" width="900" height="500"></canvas>
+
+            <!-- TOMBOL SETTINGS CEPAT -->
+            <button id="btn-open-settings" class="btn-top-settings hidden" title="Pengaturan Sistem">
+                ⚙ CONFIG<span class="desktop-shortcut"> [S]</span>
+            </button>
+
+            <!-- HUD (Muncul saat bermain) -->
+            <div id="hud" class="hidden">
+                <div class="hud-left">
+                    <div class="hud-box">
+                        <span class="label">PAYLOAD:</span>
+                        <span id="score-display" class="val-cyan">0.0 KB</span>
+                    </div>
+                    <div class="hud-box">
+                        <span class="label">PEAK:</span>
+                        <span id="highscore-display" class="val-green">0.0 KB</span>
+                    </div>
+                </div>
+                <div class="hud-right">
+                    <div id="shield-badge" class="badge badge-off">SHIELD: OFFLINE</div>
+                    <div id="turbo-badge" class="badge badge-off">OVERCLOCK: OFF</div>
+                </div>
+            </div>
+
+            <!-- 0. LAYAR BOOTING -->
+            <div id="boot-screen" class="screen-overlay" style="z-index: 30;">
+                <h1 class="text-cyan">> SYSTEM_OFFLINE</h1>
+                <p class="text-comment">// Membutuhkan otorisasi perangkat keras untuk transmisi</p>
+                <button id="btn-power" class="btn">> Initialize Node</button>
+            </div>
+
+            <!-- 0.5. LAYAR LOADING -->
+            <div id="loading-screen" class="screen-overlay hidden" style="z-index: 25;">
+                <h1 class="text-purple">> CONFIGURING_NETWORK...</h1>
+                <p id="loading-text" class="text-cyan">Memuat protokol routing...</p>
+                <div class="progress-box">
+                    <div id="loading-bar"></div>
+                </div>
+            </div>
+
+            <!-- 1. LAYAR MENU UTAMA -->
+            <div id="menu-screen" class="screen-overlay hidden" style="z-index: 20;">
+                <h1 class="text-cyan">> Data_Wave_Runner.exe</h1>
+                <p class="text-comment">// Himpunan Mahasiswa Sistem Informasi</p>
+
+                <div class="info-card">
+                    <p><span class="text-orange">[KONTROL]</span> Tahan <b>SPASI</b> / <b>KLIK KIRI</b> / <b>TAP
+                            LAYAR</b> untuk sinyal naik. Lepas untuk turun.</p>
+                    <hr class="divider">
+                    <div class="item-legend">
+                        <span><b class="legend-data">[1/0]</b> +50 KB Data</span>
+                        <span><b class="legend-shield">[◆]</b> Cache Shield</span>
+                        <span><b class="legend-turbo">[⚡]</b> Overclock</span>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button id="btn-start" class="btn">> Mulai Transmisi<span class="desktop-shortcut">
+                            [M]</span></button>
+                </div>
+            </div>
+
+            <!-- 2. LAYAR GAME OVER -->
+            <div id="gameover-screen" class="screen-overlay hidden" style="z-index: 20;">
+                <h1 class="text-red">> CONNECTION_RESET_BY_PEER</h1>
+                <p class="text-comment">// ERR_PACKET_COLLISION: Sinyal menabrak Firewall/Bug</p>
+
+                <div class="stats-result">
+                    <p>Payload Terkirim : <span id="final-score" class="val-cyan">0.0 KB</span></p>
+                    <p>Peak Throughput : <span id="final-best" class="val-green">0.0 KB</span></p>
+                </div>
+
+                <div class="btn-group">
+                    <button id="btn-retry" class="btn">> Re-transmit<span class="desktop-shortcut"> [R]</span></button>
+                    <button id="btn-menu" class="btn btn-secondary">> Terminal Utama</button>
+                </div>
+            </div>
+
+            <!-- 3. MODAL SETTINGS (CONFIG_SETTINGS.SYS) -->
+            <div id="settings-modal" class="screen-overlay hidden" style="z-index: 40;">
+                <div class="settings-box">
+                    <div class="settings-header">
+                        <span class="text-cyan">> CONFIG_SETTINGS.SYS</span>
+                        <button id="btn-close-settings" class="btn-icon">✕</button>
+                    </div>
+
+                    <div class="settings-body">
+                        <div class="setting-row">
+                            <span class="setting-label">Tema Tampilan</span>
+                            <div class="segmented-control" id="theme-selector">
+                                <button type="button" data-theme="dark" class="seg-btn active">Gelap</button>
+                                <button type="button" data-theme="light" class="seg-btn">Terang</button>
+                                <button type="button" data-theme="system" class="seg-btn">Sistem</button>
+                            </div>
+                        </div>
+
+                        <div class="setting-row">
+                            <span class="setting-label">Audio & Suara</span>
+                            <div class="toggle-group">
+                                <button type="button" id="toggle-bgm" class="toggle-btn active">BGM: ON</button>
+                                <button type="button" id="toggle-sfx" class="toggle-btn active">SFX: ON</button>
+                            </div>
+                        </div>
+
+                        <div class="setting-row">
+                            <span class="setting-label">Sudut Gelombang</span>
+                            <div class="segmented-control" id="angle-selector">
+                                <button type="button" data-angle="standard" class="seg-btn active">Santai (35°)</button>
+                                <button type="button" data-angle="aggressive" class="seg-btn">Agresif (45°)</button>
+                            </div>
+                        </div>
+
+                        <div class="setting-row">
+                            <span class="setting-label">Efek Visual</span>
+                            <div class="toggle-group">
+                                <button type="button" id="toggle-glow" class="toggle-btn active">Neon Glow: ON</button>
+                                <button type="button" id="toggle-shake" class="toggle-btn active">Getar Layar:
+                                    ON</button>
+                            </div>
+                        </div>
+
+                        <div class="setting-row setting-row-danger">
+                            <span class="setting-label">Memori Lokal</span>
+                            <button type="button" id="btn-reset-data" class="btn-danger">> Purge High Score</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. MODAL KONFIRMASI HAPUS HIGH SCORE -->
+            <div id="confirm-modal" class="screen-overlay hidden" style="z-index: 45;">
+                <div class="confirm-box">
+                    <h2 class="text-red">> WARNING: DATA_PURGE</h2>
+                    <p class="confirm-desc">Apakah kamu yakin ingin menghapus rekor <b>Peak Throughput (High Score)</b>?
+                        Tindakan ini permanen dan tidak dapat dibatalkan.</p>
+                    <div class="btn-group">
+                        <button type="button" id="btn-confirm-yes" class="btn btn-danger-solid">> Ya, Hapus
+                            Data</button>
+                        <button type="button" id="btn-confirm-no" class="btn btn-secondary">> Batal</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Audio BGM Eksternal -->
+    <audio id="bgm" src="assets/audio/bgm.mp3" loop></audio>
+
+    <!-- ENTRY POINT MODUL JAVASCRIPT -->
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
